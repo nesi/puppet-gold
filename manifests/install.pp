@@ -106,7 +106,6 @@ class gold::install(
 
   exec{'install_src':
     cwd     => "/home/gold/src/gold-${version}",
-    user    => 'gold',
     command => '/usr/bin/make install',
     # creates => "/home/gold/src/gold-${version}/bin/goldsh",
     require => Exec['compile_src','compile_deps_src'],
@@ -115,7 +114,6 @@ class gold::install(
   if $web_ui {
     exec{'install_web_ui_src':
       cwd     => "/home/gold/src/gold-${version}",
-      user    => 'gold',
       command => '/usr/bin/make install-gui',
       # creates => "/home/gold/src/gold-${version}/cgi-bin/gold.cgi",
       require => Exec['compile_web_ui_src','compile_deps_src'],
