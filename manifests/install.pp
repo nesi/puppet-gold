@@ -56,7 +56,7 @@ class gold::install(
   exec{'configure_gold_src':
     cwd     => "/home/gold/src/gold-${version}",
     user    => 'gold',
-    command => './configure',
+    command => "/home/gold/src/gold-${version}/configure",
   }
 
 }
