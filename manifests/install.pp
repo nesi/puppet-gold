@@ -94,4 +94,12 @@ class gold::install(
     }
   }
 
+    exec{'compile_deps_src':
+    cwd     => "/home/gold/src/gold-${version}",
+    user    => 'gold',
+    command => '/usr/bin/make deps',
+#    creates => "/home/gold/src/gold-${version}/bin/goldsh",
+    require => Exec['configure_gold_src'],
+  }
+
 }
