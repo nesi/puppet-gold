@@ -81,6 +81,7 @@ class gold::install(
     user    => 'gold',
     command => '/usr/bin/make',
     require => Exec['configure_gold_src'],
+    creates => '/home/gold/src/gold-${version}/bin/goldsh'
   }
 
   if $web_ui {
