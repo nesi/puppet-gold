@@ -15,6 +15,7 @@ class gold(
       class{'gold::install':
         version => $version,
         web_ui  => $web_ui,
+        httpd   => $httpd,
       }
     }
     default: {
