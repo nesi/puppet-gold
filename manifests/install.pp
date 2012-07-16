@@ -117,6 +117,7 @@ class gold::install(
       command => '/usr/bin/make install-gui',
       # creates => "/home/gold/src/gold-${version}/cgi-bin/gold.cgi",
       require => Exec['compile_web_ui_src','compile_deps_src'],
+      logoutput => true,
     }
   }
 
