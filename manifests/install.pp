@@ -127,9 +127,8 @@ class gold::install(
     path    => ['/bin','/usr/bin'],
     cwd     => "/home/gold/src/gold-${version}",
     command => "echo ${pass_phrase} | /usr/bin/make auth_key",
-    # creates => "/home/gold/src/gold-${version}/bin/goldsh",
+    creates => "/opt/gold/etc/auth_key",
     require => Exec['install_src'],
-    logoutput => true,
   }
 
 }
