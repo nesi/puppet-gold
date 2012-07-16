@@ -57,6 +57,22 @@ class gold::install(
     cwd     => "/home/gold/src/gold-${version}",
     user    => 'gold',
     command => "/home/gold/src/gold-${version}/configure",
+    creates => "/home/gold/src/gold-${version}/config.status",
+    require => [
+      Exec['get_gold_src'],
+      Package[
+        'perl',
+        'libxml2',
+        'libxml2',
+        'libxml-libxml-perl',
+        'libpg-perl',
+        'liblog-dispatch-filerotate-perl',
+        'openssl','build-essential',
+        'readline-common',
+        'libncurses5-dev',
+        'libreadline-dev',
+        'git-core']
+    ]
   }
 
 }
