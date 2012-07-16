@@ -7,7 +7,8 @@
 
 class gold(
   $version  = '2.2.0.4',
-  $web_ui   = false
+  $web_ui   = false,
+  $httpd    = 'apache2'
 ){
   case $operatingsystem {
     Ubuntu: {

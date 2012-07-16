@@ -7,7 +7,8 @@
 
 class gold::install(
   $version,
-  $web_ui
+  $web_ui,
+  $httpd
 ){
   include web::apache
   # include web::apache::secure
@@ -107,7 +108,7 @@ class gold::install(
   exec{'install_src':
     cwd     => "/home/gold/src/gold-${version}",
     command => '/usr/bin/make install',
-    # creates => "/home/gold/src/gold-${version}/bin/goldsh",
+    creates => "/opt/gold/bin/goldsh",
     require => Exec['compile_src','compile_deps_src'],
   }
 
@@ -115,15 +116,14 @@ class gold::install(
     exec{'install_web_ui_src':
       cwd     => "/home/gold/src/gold-${version}",
       command => '/usr/bin/make install-gui',
-      # creates => "/home/gold/src/gold-${version}/cgi-bin/gold.cgi",
+      creates => "/var/www/cgi-bin/gold/gold.cgi",
       require => Exec['compile_web_ui_src','compile_deps_src'],
-      logoutput => true,
+      notify  => Service[$httpd],
     }
   }
 
   exec{'create_auth_keys':
     cwd     => "/home/gold/src/gold-${version}",
-    user    => 'gold',
     command => '/usr/bin/make auth_key',
     # creates => "/home/gold/src/gold-${version}/bin/goldsh",
     require => Exec['install_src'],
