@@ -6,7 +6,8 @@
 # http://www.adaptivecomputing.com/resources/docs/gold/index.php
 
 class gold::install(
-  $version
+  $version,
+  $web_ui
 ){
   include web::apache
   # include web::apache::secure
