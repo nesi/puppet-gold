@@ -99,7 +99,7 @@ class gold::install(
     user    => 'gold',
     command => '/usr/bin/make deps',
 #    creates => "/home/gold/src/gold-${version}/bin/goldsh",
-    require => Exec['configure_gold_src'],
+    require => Exec['compile_src'],
   }
 
 }
