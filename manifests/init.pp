@@ -6,7 +6,7 @@
 # http://www.adaptivecomputing.com/resources/docs/gold/index.php
 
 class gold(
-  $version - '2.2.0.4'
+  $version = '2.2.0.4'
 ){
   case $operatingsystem {
     Ubuntu: {
