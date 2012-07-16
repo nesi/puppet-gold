@@ -80,8 +80,8 @@ class gold::install(
     cwd     => "/home/gold/src/gold-${version}",
     user    => 'gold',
     command => '/usr/bin/make',
+    creates => "/home/gold/src/gold-${version}/bin/goldsh",
     require => Exec['configure_gold_src'],
-    creates => '/home/gold/src/gold-${version}/bin/goldsh'
   }
 
   if $web_ui {
@@ -89,6 +89,7 @@ class gold::install(
       cwd     => "/home/gold/src/gold-${version}",
       user    => 'gold',
       command => '/usr/bin/make gui',
+      creates => "/home/gold/src/gold-${version}/cgi-bin/gold.cgi",
       require => Exec['compile_src'],
     }
   }
