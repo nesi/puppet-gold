@@ -127,6 +127,7 @@ class gold::install(
     command => '/usr/bin/make auth_key',
     # creates => "/home/gold/src/gold-${version}/bin/goldsh",
     require => Exec['install_src'],
+    logoutput => true,
   }
 
 }
