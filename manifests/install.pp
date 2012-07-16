@@ -9,7 +9,7 @@ class gold::install(
   $version
 ){
   include web::apache
-  include web::apache::secure
+  # include web::apache::secure
   include database::postgresql::client
 
   package {"perl": ensure => installed }
