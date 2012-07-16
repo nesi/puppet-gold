@@ -16,7 +16,7 @@ class gold::install(
   package {"libxml2": ensure => installed }
   package {"libxml2-dev": ensure => installed}
   package {"libxml-libxml-perl": ensure => installed}
-  package {"libpg-dev": ensure => installed}
+  package {"libpg-perl": ensure => installed}
   package {"liblog-dispatch-filerotate-perl": ensure => installed}
   package {"openssl": ensure => installed }
   package {"build-essential": ensure => installed }
