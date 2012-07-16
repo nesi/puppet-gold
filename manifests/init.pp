@@ -6,16 +6,18 @@
 # http://www.adaptivecomputing.com/resources/docs/gold/index.php
 
 class gold(
-  $version  = '2.2.0.4',
-  $web_ui   = false,
-  $httpd    = 'apache2'
+  $version      = '2.2.0.4',
+  $web_ui       = false,
+  $httpd        = 'apache2',
+  $pass_phrase  = 'changeme'
 ){
   case $operatingsystem {
     Ubuntu: {
       class{'gold::install':
-        version => $version,
-        web_ui  => $web_ui,
-        httpd   => $httpd,
+        version     => $version,
+        web_ui      => $web_ui,
+        httpd       => $httpd,
+        pass_phrase => $pass_phrase,
       }
     }
     default: {

@@ -8,7 +8,8 @@
 class gold::install(
   $version,
   $web_ui,
-  $httpd
+  $httpd,
+  $pass_phrase
 ){
   include web::apache
   # include web::apache::secure
@@ -123,8 +124,9 @@ class gold::install(
   }
 
   exec{'create_auth_keys':
+    path    => ['/bin','/usr/bin'],
     cwd     => "/home/gold/src/gold-${version}",
-    command => '/usr/bin/make auth_key',
+    command => "echo ${pass_phrase} | /usr/bin/make auth_key",
     # creates => "/home/gold/src/gold-${version}/bin/goldsh",
     require => Exec['install_src'],
     logoutput => true,
