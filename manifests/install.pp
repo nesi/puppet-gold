@@ -85,7 +85,7 @@ class gold::install(
   }
 
   if $web_ui {
-    exec{'compile_src':
+    exec{'compile_web_ui_src':
       cwd     => "/home/gold/src/gold-${version}",
       user    => 'gold',
       command => '/usr/bin/make gui',
