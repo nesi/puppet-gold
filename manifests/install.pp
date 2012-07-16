@@ -75,4 +75,20 @@ class gold::install(
     ]
   }
 
+  exec{'compile_src':
+    cwd     => "/home/gold/src/gold-${version}",
+    user    => 'gold',
+    command => '/usr/bin/make',
+    require => Exec['configure_gold_src'],
+  }
+
+  if $web_ui {
+    exec{'compile_src':
+      cwd     => "/home/gold/src/gold-${version}",
+      user    => 'gold',
+      command => '/usr/bin/make gui',
+      require => Exec['compile_src'],
+    }
+  }
+
 }

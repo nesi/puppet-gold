@@ -6,12 +6,14 @@
 # http://www.adaptivecomputing.com/resources/docs/gold/index.php
 
 class gold(
-  $version = '2.2.0.4'
+  $version  = '2.2.0.4',
+  $web_ui   = false
 ){
   case $operatingsystem {
     Ubuntu: {
       class{'gold::install':
         version => $version,
+        web_ui  => $web_ui,
       }
     }
     default: {
