@@ -1,4 +1,4 @@
-  # NeSI G.O.L.D. deployment module
+# NeSI G.O.L.D. deployment module
 # Deploy the GOLD accounting system by Adaptive Computing
 # http://www.adaptivecomputing.com/products/open-source/gold/
 #
@@ -94,12 +94,40 @@ class gold::install(
     }
   }
 
-    exec{'compile_deps_src':
+  # Possibly it would be more reliable to install all the
+  # perl dependencies as packages...
+  exec{'compile_deps_src':
     cwd     => "/home/gold/src/gold-${version}",
     user    => 'gold',
     command => '/usr/bin/make deps',
-#    creates => "/home/gold/src/gold-${version}/bin/goldsh",
+    creates => "/home/gold/src/gold-${version}/src/DBI-1.53",
     require => Exec['compile_src'],
+  }
+
+  exec{'install_src':
+    cwd     => "/home/gold/src/gold-${version}",
+    user    => 'gold',
+    command => '/usr/bin/make install',
+    # creates => "/home/gold/src/gold-${version}/bin/goldsh",
+    require => Exec['compile_src','compile_deps_src'],
+  }
+
+  if $web_ui {
+    exec{'install_web_ui_src':
+      cwd     => "/home/gold/src/gold-${version}",
+      user    => 'gold',
+      command => '/usr/bin/make install-gui',
+      # creates => "/home/gold/src/gold-${version}/cgi-bin/gold.cgi",
+      require => Exec['compile_web_ui_src','compile_deps_src'],
+    }
+  }
+
+  exec{'create_auth_keys':
+    cwd     => "/home/gold/src/gold-${version}",
+    user    => 'gold',
+    command => '/usr/bin/make auth_key',
+    # creates => "/home/gold/src/gold-${version}/bin/goldsh",
+    require => Exec['install_src'],
   }
 
 }
