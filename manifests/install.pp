@@ -11,9 +11,6 @@ class gold::install(
   $httpd,
   $pass_phrase
 ){
-  include web::apache
-  # include web::apache::secure
-  include database::postgresql::client
 
   package {"perl": ensure => installed }
   package {"libxml2": ensure => installed }
