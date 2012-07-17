@@ -9,7 +9,8 @@ class gold::install(
   $version,
   $web_ui,
   $httpd,
-  $pass_phrase
+  $pass_phrase,
+  $psql_server
 ){
 
   package {"perl": ensure => installed }
