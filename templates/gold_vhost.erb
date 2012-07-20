@@ -1,7 +1,7 @@
 <VirtualHost <%= ipaddress %>:443>
   DocumentRoot /var/www/cgi-bin/gold
-  ServerName mygoldserver.mysite.org
-  ServerAdmin my.email@mysite.org
+  ServerName <%= fqdn %>
+  ServerAdmin <%= admin_email %>
   ErrorLog /var/logs/apache2/gold-error_log
   TransferLog /var/log/apache2/gold-access_log
   SSLEngine on

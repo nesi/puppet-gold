@@ -12,7 +12,13 @@ class gold(
   $pass_phrase  = 'changeme',
   $psql_server  = false,
   $db_user      = 'gold',
-  $db_name      = 'gold'
+  $db_name      = 'gold',
+  $country      = "",
+  $state        = "",
+  $city         = "",
+  $organisation = "",
+  $ou           = "",
+  $admin_email
 ){
   case $operatingsystem {
     Ubuntu: {

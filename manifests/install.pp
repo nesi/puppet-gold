@@ -12,7 +12,13 @@ class gold::install(
   $pass_phrase,
   $psql_server,
   $db_user,
-  $db_name
+  $db_name,
+  $country,
+  $state,
+  $city,
+  $organisation,
+  $ou,
+  $admin_email
 ){
 
   package {"perl": ensure => installed }
@@ -149,9 +155,20 @@ class gold::install(
     require => File['gold_ssl.key'],
   }
 
+  $cert_details = "<<EOF
+${country}
+${state}
+${city}
+${organisation}
+${ou}
+${fqdn}
+${admin_email}
+EOF
+echo ''"
+
   exec{'gold_ssl.crt':
     path    => ['/usr/bin'],
-    command => 'openssl req -new -key /etc/apache2/ssl.key/gold-server.key -x509 -out /etc/apache2/ssl.crt/gold-server.crt',
+    command => 'openssl req -new -key /etc/apache2/ssl.key/gold-server.key -x509 -out /etc/apache2/ssl.crt/gold-server.crt $cert_details',
     creates => '/etc/apache2/ssl.crt/gold-server.crt',
     require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
