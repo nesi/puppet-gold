@@ -198,9 +198,10 @@ echo ''"
 
   exec{'bootstrap_gold_db':
     user    => $db_user,
-    path    => ['/usr/bin'],
+    path    => ['/usr/bin','/bin'],
     cwd     => "/home/gold/src/gold-${version}",
     command => "psql ${db_name} < /home/gold/src/gold-${version}/bank.sql",
+    unless  => "psql gold -c '\\dt'|grep g_account",
     require => [Postgresql::Database[$db_name],Postgresql::User[$db_user]],
   }
 
