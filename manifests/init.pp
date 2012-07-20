@@ -23,13 +23,19 @@ class gold(
   case $operatingsystem {
     Ubuntu: {
       class{'gold::install':
-        version     => $version,
-        web_ui      => $web_ui,
-        httpd       => $httpd,
-        pass_phrase => $pass_phrase,
-        psql_server => $psql_server,
-        db_user     => $db_user,
-        db_name     => $db_name,
+        version       => $version,
+        web_ui        => $web_ui,
+        httpd         => $httpd,
+        pass_phrase   => $pass_phrase,
+        psql_server   => $psql_server,
+        db_user       => $db_user,
+        db_name       => $db_name,
+        country       => $country,
+        state         => $state,
+        city          => $city,
+        organisation  => $organisation,
+        ou            => $ou,
+        admin_email   => $admin_email
       }
     }
     default: {
