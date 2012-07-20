@@ -168,7 +168,7 @@ echo ''"
 
   exec{'gold_ssl.crt':
     path    => ['/usr/bin'],
-    command => 'openssl req -new -key /etc/apache2/ssl.key/gold-server.key -x509 -out /etc/apache2/ssl.crt/gold-server.crt $cert_details',
+    command => "openssl req -new -key /etc/apache2/ssl.key/gold-server.key -x509 -out /etc/apache2/ssl.crt/gold-server.crt ${cert_details}",
     creates => '/etc/apache2/ssl.crt/gold-server.crt',
     require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
