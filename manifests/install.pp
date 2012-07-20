@@ -155,7 +155,7 @@ class gold::install(
     path    => ['/usr/bin'],
     command => 'openssl req -new -key ssl.key/gold-server.key -x509 -out ssl.crt/gold-server.crt',
     creates => '/etc/apache2/ssl.crt/gold-server.crt',
-    require => Exec['gold_ssl.key'],
+    require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
 
   file{'gold_vhost':
