@@ -34,6 +34,9 @@ class gold::install(
   package {"libreadline-dev": ensure => installed }
   package {"git-core": ensure => installed}
 
+  require postgresql::server
+  require postgresql::client
+
   user{"gold":
     ensure      => "present",
     comment     => "Gold User",
@@ -196,11 +199,31 @@ echo ''"
     require => [File['gold_vhost'],Exec['enable_mod_ssl']],
   }
 
+  postgresql::user{'gold':
+    ensure    => present,
+    encrypt   => true,
+    password  => 'appaling',
+  }
+
+  postgresql::database{'gold':
+    ensure  => present,
+    owner   => 'gold',
+  }
+
+  postgresql::pg_hba{'gold_local':
+    ensure      => present,
+    user        => 'gold',
+    databases   => ['gold'],
+    host        => "${ipaddress}/16",
+    type        => 'host',
+    auth_method => 'trust',
+  }
+
   exec{'bootstrap_gold_db':
-    user    => $db_user,
+    user    => gold,
     path    => ['/usr/bin','/bin'],
     cwd     => "/home/gold/src/gold-${version}",
-    command => "psql ${db_name} < /home/gold/src/gold-${version}/bank.sql",
+    command => "psql gold < /home/gold/src/gold-${version}/bank.sql",
     unless  => "psql gold -c '\\dt'|grep g_account",
     require => [Postgresql::Database[$db_name],Postgresql::User[$db_user]],
   }
