@@ -10,7 +10,9 @@ class gold(
   $web_ui       = false,
   $httpd        = 'apache2',
   $pass_phrase  = 'changeme',
-  $psql_server  = false
+  $psql_server  = false,
+  $db_user      = 'gold',
+  $db_name      = 'gold'
 ){
   case $operatingsystem {
     Ubuntu: {
@@ -19,7 +21,9 @@ class gold(
         web_ui      => $web_ui,
         httpd       => $httpd,
         pass_phrase => $pass_phrase,
-        psql_server => $psql_server
+        psql_server => $psql_server,
+        db_user     => $db_user,
+        db_name     => $db_name,
       }
     }
     default: {

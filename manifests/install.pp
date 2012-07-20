@@ -129,4 +129,39 @@ class gold::install(
     require => Exec['install_src'],
   }
 
+  file{'gold_ssl.key':
+    ensure  => directory,
+    path    => '/etc/apache2/ssl.key'
+  }
+
+  file{'gold_ssl.crt':
+    ensure  => directory,
+    path    => '/etc/apache2/ssl.crt'
+  }
+
+  # These may be better pre-generated and stored in the private file server...
+  exec{'gold_ssl.key':
+    cwd     => '/etc/apache2/ssl.key',
+    path    => ['/usr/bin'],
+    command => 'openssl genrsa -out gold-server.key 1024',
+    creates => '/usr/apache2/ssl.key/gold-server.key',
+    require => File['gold_ssl.key'],
+  }
+
+  exec{'gold_ssl.crt':
+    cwd     => '/etc/apache2',
+    path    => ['/usr/bin'],
+    command => 'openssl req -new -key ssl.key/gold-server.key -x509 -out ssl.crt/gold-server.crt',
+    creates => '/etc/apache2/ssl.crt/gold-server.crt',
+    require => Exec['gold_ssl.key'],
+  }
+
+  file{'gold_vhost':
+    ensure  => file,
+    path    => '/etc/apache2/sites-available/gold_vhost',
+    content => template('gold/gold_vhost.erb'),
+    notify  => Service[$httpd],
+    require => Exec['gold_ssl.crt'],
+  }
+
 }
