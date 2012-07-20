@@ -182,11 +182,17 @@ echo ''"
     require => Exec['gold_ssl.crt'],
   }
 
+  exec{'enable_mod_ssl':
+    command => '/usr/sbin/a2enmod ssl',
+    creates => '/etc/apache2/mods-enabled/ssl.load',
+    notify  => Service[$httpd],
+  }
+
   exec{'enable_gold_site':
     command => '/usr/sbin/a2ensite gold_vhost',
     creates => '/etc/apache2/sites-enabled/gold_vhost',
     notify  => Service[$httpd],
-    require => File['gold_vhost'],
+    require => [File['gold_vhost'],Exec['enable_mod_ssl']],
   }
 
 }
