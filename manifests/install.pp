@@ -155,6 +155,7 @@ class gold::install(
     require => File['gold_ssl.key'],
   }
 
+  # using a multi line variable to pass data to an interactive shell command
   $cert_details = "<<EOF
 ${country}
 ${state}
@@ -179,6 +180,13 @@ echo ''"
     content => template('gold/gold_vhost.erb'),
     notify  => Service[$httpd],
     require => Exec['gold_ssl.crt'],
+  }
+
+  exec{'enable_gold_site':
+    command => '/usr/sbin/a2ensite gold_vhost',
+    creates => '/etc/apache2/sites-enabled/gold_vhost',
+    notify  => Service[$httpd],
+    require => File['gold_vhost'],
   }
 
 }
