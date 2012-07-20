@@ -182,6 +182,7 @@ echo ''"
     require => Exec['gold_ssl.crt'],
   }
 
+  # I really need to do a proper Apache manifest!
   exec{'enable_mod_ssl':
     command => '/usr/sbin/a2enmod ssl',
     creates => '/etc/apache2/mods-enabled/ssl.load',
@@ -194,5 +195,14 @@ echo ''"
     notify  => Service[$httpd],
     require => [File['gold_vhost'],Exec['enable_mod_ssl']],
   }
+
+  exec{'bootstrap_gold_db':
+    user    => $db_user,
+    path    => ['/usr/bin'],
+    cwd     => "/home/gold/src/gold-${version}",
+    command => "psql ${db_name} < /home/gold/src/gold-${version}/bank.sql",
+    require => [Postgresql::Database[$db_name],Postgresql::User[$db_user]],
+  }
+
 
 }
