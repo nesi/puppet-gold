@@ -143,17 +143,15 @@ class gold::install(
 
   # These may be better pre-generated and stored in the private file server...
   exec{'gold_ssl.key':
-    cwd     => '/etc/apache2/ssl.key',
     path    => ['/usr/bin'],
-    command => 'openssl genrsa -out gold-server.key 1024',
-    creates => '/usr/apache2/ssl.key/gold-server.key',
+    command => 'openssl genrsa -out /etc/apache2/ssl.key/gold-server.key 1024',
+    creates => '/etc/apache2/ssl.key/gold-server.key',
     require => File['gold_ssl.key'],
   }
 
   exec{'gold_ssl.crt':
-    cwd     => '/etc/apache2',
     path    => ['/usr/bin'],
-    command => 'openssl req -new -key ssl.key/gold-server.key -x509 -out ssl.crt/gold-server.crt',
+    command => 'openssl req -new -key /etc/apache2/ssl.key/gold-server.key -x509 -out /etc/apache2/ssl.crt/gold-server.crt',
     creates => '/etc/apache2/ssl.crt/gold-server.crt',
     require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
