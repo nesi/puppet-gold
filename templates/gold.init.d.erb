@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# chkconfig: 2345 93 7
+# description: gold startup script
+#
+# 1. This file should be installed as /etc/init.d/gold
+# 
+# 2. Start gold with:
+#
+#      /etc/init.d/gold start
+#
+# Source function library.
+[ -f /etc/rc.d/init.d/functions ] || exit 0
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+prog="gold"
+export GOLD_HOME=@prefix@
+
+PIDFILE=$GOLD_HOME/etc/$prog.pid
+LOCKFILE=/var/lock/subsys/$prog
+
+#
+# The pathname substitution in daemon command assumes prefix and
+# exec_prefix are same.  This is the default, unless the user requests
+# otherwise.
+#
+case "$1" in
+    start)
+        echo -n "Starting $prog: "
+   	    daemon --user @USER@ $GOLD_HOME/sbin/goldd
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && touch $LOCKFILE
+        ;;
+    stop)
+        echo -n "Shutting down $prog: "
+        $GOLD_HOME/sbin/goldd -k >/dev/null
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && rm -f $LOCKFILE && success
+        echo
+        ;;
+    restart)
+        $0 stop
+        $0 start
+		;;
+    status)
+        status -p $PIDFILE $GOLD_HOME/sbin/goldd
+        RETVAL=$?
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        RETVAL=1
+        ;;
+esac
+exit $RETVAL

@@ -228,5 +228,19 @@ echo ''"
     require => [Postgresql::Database[$db_name],Postgresql::User[$db_user]],
   }
 
+  file{'gold_init.d':
+    ensure  => file,
+    path    => "/etc/init.d/gold",
+    content => template('gold/gold.init.d.erb'),
+    require => Exec['bootstrap_gold_db','enable_gold_site','create_auth_keys'],
+  }
+
+  service{'gold':
+    ensure  => running,
+    enable      => true,
+    hasstatus   => true,
+    hasrestart  => true,
+    require     => File['gold_init.d'],
+  }
 
 }
