@@ -33,6 +33,13 @@ class gold::install(
   package {"libncurses5-dev": ensure => installed }
   package {"libreadline-dev": ensure => installed }
   package {"git-core": ensure => installed}
+  package {"libapache2-request-perl": ensure => installed}
+  package {"libcgi-application-plugin-session-perl": ensure => installed}
+  package {"libwww-mechanize-gzip-perl": ensure => installed}
+  package {"libcrypt-cbc-perl": ensure => installed}
+  package {"libcrypt-des-perl": ensure => installed}
+  package {"libcrypt-des-ede3-perl": ensure => installed}
+  
 
   require postgresql::server
   require postgresql::client
