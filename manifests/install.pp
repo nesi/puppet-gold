@@ -21,7 +21,7 @@ class gold::install(
   $admin_email
 ){
 
-  package {"perl": ensure => installed }
+  include perl
   package {"libxml2": ensure => installed }
   package {"libxml2-dev": ensure => installed}
   package {"libxml-libxml-perl": ensure => installed}
@@ -39,7 +39,7 @@ class gold::install(
   package {"libcrypt-cbc-perl": ensure => installed}
   package {"libcrypt-des-perl": ensure => installed}
   package {"libcrypt-des-ede3-perl": ensure => installed}
-  
+
 
   require postgresql::server
   require postgresql::client
