@@ -169,6 +169,13 @@ class gold::install(
     require => Exec['compile_src','compile_deps_src'],
   }
 
+  exec{'add_gold_path':
+    user    => gold,
+    command => 'PATH=$PATH:/opt/gold/bin && export PATH',
+    unless  => 'echo $PATH| grep /opt/gold/bin',
+    require => Exec['install_src'],
+  }
+
   if $web_ui {
     exec{'install_web_ui_src':
       cwd     => "/home/gold/src/gold-${version}",
