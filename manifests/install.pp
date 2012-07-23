@@ -40,7 +40,7 @@ class gold::install(
   package {"libcrypt-des-perl": ensure => installed}
   package {"libcrypt-des-ede3-perl": ensure => installed}
   package {"libdigest-bubblebabble-perl": ensure => installed}
-  package {"libdbd-pg-perl ": ensure => installed}
+  package {"libdbd-pg-perl": ensure => installed}
 
   perl::cpan {'CGI': ensure => installed}
   perl::cpan {'CGI::Session': ensure => installed}
