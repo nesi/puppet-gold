@@ -78,6 +78,7 @@ class gold::install(
     ensure      => "present",
     comment     => "Gold User",
     home        => '/home/gold',
+    shell       => "/bin/bash",
     managehome  => true,
   }
 
