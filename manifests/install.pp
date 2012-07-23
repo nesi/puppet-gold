@@ -86,7 +86,7 @@ class gold::install(
     shell       => "/bin/bash",
     groups      => $extra_groups ? {
       false       => [],
-      defailt     => $extra_groups,
+      default     => $extra_groups,
     },
 
   }
