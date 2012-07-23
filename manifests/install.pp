@@ -40,6 +40,7 @@ class gold::install(
   package {"libcrypt-des-perl": ensure => installed}
   package {"libcrypt-des-ede3-perl": ensure => installed}
   package {"libdigest-bubblebabble-perl": ensure => installed}
+  package {"libdbd-pg-perl ": ensure => installed}
 
   perl::cpan {'CGI': ensure => installed}
   perl::cpan {'CGI::Session': ensure => installed}
@@ -50,7 +51,7 @@ class gold::install(
   perl::cpan {'Data::Properties': ensure => installed}
   perl::cpan {'Date::Manip': ensure => installed}
   perl::cpan {'DBI': ensure => installed}
-  perl::cpan {'DBD::Pg': ensure => installed}
+  # perl::cpan {'DBD::Pg': ensure => installed}
   perl::cpan {'Digest': ensure => installed}
   perl::cpan {'Digest::HMAC': ensure => installed}
   perl::cpan {'Digest::MD5': ensure => installed}
