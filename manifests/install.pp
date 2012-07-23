@@ -172,7 +172,7 @@ class gold::install(
   file{'gold_path':
     ensure  => file,
     path    => '/etc/profile.d/goldpath.sh',
-    content => "export PATH=$PATH:/opt/gold/bin"
+    content => "PATH=$PATH:/opt/gold/bin"
   }
 
   if $web_ui {
