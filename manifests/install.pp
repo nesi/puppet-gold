@@ -78,12 +78,16 @@ class gold::install(
     ensure      => "present",
     comment     => "Gold User",
     home        => '/home/gold',
+    managehome  => true,
+  }
+
+  User['gold']{
     shell       => "/bin/bash",
     groups      => $extra_groups ? {
       false       => [],
       defailt     => $extra_groups,
-    }
-    managehome  => true,
+    },
+
   }
 
   file{'/home/gold':

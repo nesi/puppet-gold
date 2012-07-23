@@ -18,8 +18,8 @@ class gold(
   $city         = "",
   $organisation = "",
   $ou           = "",
-  $admin_email.
-  $extra_groups = false,
+  $admin_email,
+  $extra_groups = false
 ){
   case $operatingsystem {
     Ubuntu: {
