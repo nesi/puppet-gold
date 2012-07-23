@@ -45,7 +45,7 @@ case "$1" in
         $0 start
 		;;
     status)
-        status -p $PIDFILE $GOLD_HOME/sbin/goldd
+        status $prog
         RETVAL=$?
         ;;
     *)
