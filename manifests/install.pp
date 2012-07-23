@@ -79,6 +79,10 @@ class gold::install(
     comment     => "Gold User",
     home        => '/home/gold',
     shell       => "/bin/bash",
+    groups      => $extra_groups ? {
+      false       => [],
+      defailt     => $extra_groups,
+    }
     managehome  => true,
   }
 

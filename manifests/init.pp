@@ -18,7 +18,8 @@ class gold(
   $city         = "",
   $organisation = "",
   $ou           = "",
-  $admin_email
+  $admin_email.
+  $extra_groups = false,
 ){
   case $operatingsystem {
     Ubuntu: {
@@ -35,7 +36,8 @@ class gold(
         city          => $city,
         organisation  => $organisation,
         ou            => $ou,
-        admin_email   => $admin_email
+        admin_email   => $admin_email,
+        extra_groups  => $extra_groups,
       }
     }
     default: {
