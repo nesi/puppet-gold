@@ -28,7 +28,7 @@ LOCKFILE=/var/lock/subsys/$prog
 case "$1" in
     start)
         echo -n "Starting $prog: "
-   	    daemon --user @USER@ $GOLD_HOME/sbin/goldd
+   	    daemon --user gold $GOLD_HOME/sbin/goldd
         RETVAL=$?
         echo
         [ $RETVAL -eq 0 ] && touch $LOCKFILE
