@@ -51,7 +51,7 @@ class gold::install(
   perl::cpan {'Data::Properties': ensure => installed}
   perl::cpan {'Date::Manip': ensure => installed}
   perl::cpan {'DBI': ensure => installed}
-  # perl::cpan {'DBD::Pg': ensure => installed}
+  # perl::cpan {'DBD::Pg': ensure => installed} # Interactive, asks for PostgreSQL version.
   perl::cpan {'Digest': ensure => installed}
   perl::cpan {'Digest::HMAC': ensure => installed}
   perl::cpan {'Digest::MD5': ensure => installed}
