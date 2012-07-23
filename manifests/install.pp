@@ -41,35 +41,34 @@ class gold::install(
   package {"libcrypt-des-ede3-perl": ensure => installed}
   package {"libdigest-bubblebabble-perl": ensure => installed}
 
-  perl::cpan {
-    'CGI',
-    'CGI::Session',
-    'Compress::Zlib',
-    'Crypt::CBC',
-    'Crypt::DES',
-    'Crypt::DES_EDE3',
-    'Data::Properties',
-    'Date::Manip',
-    'DBI',
-    'DBD::Pg',
-    'Digest',
-    'Digest::HMAC',
-    'Digest::MD5',
-    'Digest::SHA1',
-    'Error',
-    'Log::Dispatch',
-    'Log::Dispatch::FileRotate',
-    'Log::Log4perl',
-    'MIME::Base64',
-    'Module::Build',
-    'Params::Validate',
-    'SOAP',
-    'Term::ReadLine::Gnu',
-    'Time::HiRes',
-    'XML::SAX',
-    'XML::LibXML::Common',
-    'XML::LibXML',
-    'XML::NamespaceSupport': ensure => installed}
+  perl::cpan {'CGI': ensure => installed}
+  perl::cpan {'CGI::Session': ensure => installed}
+  perl::cpan {'Compress::Zlib': ensure => installed}
+  perl::cpan {'Crypt::CBC': ensure => installed}
+  perl::cpan {'Crypt::DES': ensure => installed}
+  perl::cpan {'Crypt::DES_EDE3': ensure => installed}
+  perl::cpan {'Data::Properties': ensure => installed}
+  perl::cpan {'Date::Manip': ensure => installed}
+  perl::cpan {'DBI': ensure => installed}
+  perl::cpan {'DBD::Pg': ensure => installed}
+  perl::cpan {'Digest': ensure => installed}
+  perl::cpan {'Digest::HMAC': ensure => installed}
+  perl::cpan {'Digest::MD5': ensure => installed}
+  perl::cpan {'Digest::SHA1': ensure => installed}
+  perl::cpan {'Error': ensure => installed}
+  perl::cpan {'Log::Dispatch': ensure => installed}
+  perl::cpan {'Log::Dispatch::FileRotate': ensure => installed}
+  perl::cpan {'Log::Log4perl': ensure => installed}
+  perl::cpan {'MIME::Base64': ensure => installed}
+  perl::cpan {'Module::Build': ensure => installed}
+  perl::cpan {'Params::Validate': ensure => installed}
+  perl::cpan {'SOAP': ensure => installed}
+  perl::cpan {'Term::ReadLine::Gnu': ensure => installed}
+  perl::cpan {'Time::HiRes': ensure => installed}
+  perl::cpan {'XML::SAX': ensure => installed}
+  perl::cpan {'XML::LibXML::Common': ensure => installed}
+  perl::cpan {'XML::LibXML': ensure => installed}
+  perl::cpan {'XML::NamespaceSupport': ensure => installed}
 
   require postgresql::server
   require postgresql::client
