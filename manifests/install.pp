@@ -172,7 +172,7 @@ class gold::install(
   exec{'add_gold_path':
     user    => gold,
     command => 'PATH=$PATH:/opt/gold/bin && export PATH',
-    unless  => '/bin/echo $PATH|/bingrep /opt/gold/bin',
+    unless  => '/bin/echo $PATH|/bin/grep /opt/gold/bin',
     require => Exec['install_src'],
   }
 
