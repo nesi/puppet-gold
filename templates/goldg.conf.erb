@@ -1,0 +1,31 @@
+# Gold Client Config File
+
+server.host = <%= fqdn %>
+# server.port = 7112
+# server.backup = NONE
+
+# security.authentication = true
+# security.encryption = false
+# security.token.type = symmetric
+
+# response.chunking = false
+# response.chunksize = 0
+# currency.precision = 0
+
+# Log4perl configuration
+log4perl.logger = TRACE, Log, Screen
+log4perl.appender.Log.Threshold = INFO
+log4perl.appender.Screen.Threshold = FATAL
+#log4perl.logger.Message = TRACE, Screen
+#log4perl.appender.Log = Log::Log4perl::Appender::File
+log4perl.appender.Log = Log::Dispatch::FileRotate
+log4perl.appender.Log.filename = /opt/gold/log/goldg.log
+#log4perl.appender.Log.filename = sub { my $user=(getpwuid($<))[0]; "/opt/gold/log/goldg.log.$user" }
+log4perl.appender.Log.mode = append
+log4perl.appender.Log.size = 10000000
+log4perl.appender.Log.max = 7
+log4perl.appender.Log.layout = PatternLayout
+log4perl.appender.Log.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss} %-5p %M  %m%n
+log4perl.appender.Screen = Log::Log4perl::Appender::Screen
+log4perl.appender.Screen.layout = PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %M [%F:%L]  %m%n
