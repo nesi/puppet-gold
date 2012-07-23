@@ -18,7 +18,8 @@ class gold::install(
   $city,
   $organisation,
   $ou,
-  $admin_email
+  $admin_email,
+  $extra_groups
 ){
 
   include perl
