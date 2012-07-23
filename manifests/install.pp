@@ -62,7 +62,7 @@ class gold::install(
   perl::cpan {'MIME::Base64': ensure => installed}
   perl::cpan {'Module::Build': ensure => installed}
   perl::cpan {'Params::Validate': ensure => installed}
-  perl::cpan {'SOAP': ensure => installed}
+  # perl::cpan {'SOAP': ensure => installed}
   perl::cpan {'Term::ReadLine::Gnu': ensure => installed}
   perl::cpan {'Time::HiRes': ensure => installed}
   perl::cpan {'XML::SAX': ensure => installed}
