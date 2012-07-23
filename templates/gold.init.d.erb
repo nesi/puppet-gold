@@ -10,8 +10,8 @@
 #      /etc/init.d/gold start
 #
 # Source function library.
-[ -f /etc/rc.d/init.d/functions ] || exit 0
-. /etc/rc.d/init.d/functions
+[ -f /lib/lsb/init-functions ] || exit 0
+. /lib/lsb/init-functions
 
 RETVAL=0
 prog="gold"
