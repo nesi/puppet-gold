@@ -39,9 +39,37 @@ class gold::install(
   package {"libcrypt-cbc-perl": ensure => installed}
   package {"libcrypt-des-perl": ensure => installed}
   package {"libcrypt-des-ede3-perl": ensure => installed}
+  package {"libdigest-bubblebabble-perl": ensure => installed}
 
-  perl::cpan {"Data::Properties": ensure => installed}
-
+  perl::cpan {
+    'CGI',
+    'CGI::Session',
+    'Compress::Zlib',
+    'Crypt::CBC',
+    'Crypt::DES',
+    'Crypt::DES_EDE3',
+    'Data::Properties',
+    'Date::Manip',
+    'DBI',
+    'DBD::Pg',
+    'Digest',
+    'Digest::HMAC',
+    'Digest::MD5',
+    'Digest::SHA1',
+    'Error',
+    'Log::Dispatch',
+    'Log::Dispatch::FileRotate',
+    'Log::Log4perl',
+    'MIME::Base64',
+    'Module::Build',
+    'Params::Validate',
+    'SOAP',
+    'Term::ReadLine::Gnu',
+    'Time::HiRes',
+    'XML::SAX',
+    'XML::LibXML::Common',
+    'XML::LibXML',
+    'XML::NamespaceSupport': ensure => installed}
 
   require postgresql::server
   require postgresql::client
