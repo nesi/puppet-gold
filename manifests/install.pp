@@ -214,13 +214,6 @@ echo ''"
     require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
 
-  file{'goldg.conf':
-    ensure  => file,
-    path    => '/opt/gold/etc/goldg.conf',
-    content => template('gold/goldg.conf.erb'),
-    require => Exec['install_src','install-gui'],
-  }
-
   file{'gold_vhost':
     ensure  => file,
     path    => '/etc/apache2/sites-available/gold_vhost',
@@ -241,6 +234,13 @@ echo ''"
     creates => '/etc/apache2/sites-enabled/gold_vhost',
     notify  => Service[$httpd],
     require => [File['gold_vhost'],Exec['enable_mod_ssl']],
+  }
+
+  file{'goldg.conf':
+    ensure  => file,
+    path    => '/opt/gold/etc/goldg.conf',
+    content => template('gold/goldg.conf.erb'),
+    require => Exec['install_src'],
   }
 
   postgresql::user{'gold':
