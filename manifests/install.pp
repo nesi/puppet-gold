@@ -169,12 +169,10 @@ class gold::install(
     require => Exec['compile_src','compile_deps_src'],
   }
 
-  exec{'add_gold_path':
-    user    => gold,
-    path    => ['/bin'],
-    command => 'PATH=$PATH:/opt/gold/bin && export PATH',
-    unless  => 'echo $PATH|grep /opt/gold/bin',
-    require => Exec['install_src'],
+  file{'gold_path':
+    ensure  => file,
+    path    => '/etc/profile.d/goldpath.sh',
+    content => "export PATH=$PATH:/opt/gold/bin"
   }
 
   if $web_ui {
