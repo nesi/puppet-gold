@@ -40,7 +40,7 @@ class gold::install(
   package {"libcrypt-des-perl": ensure => installed}
   package {"libcrypt-des-ede3-perl": ensure => installed}
 
-  perl::cpan {"Data::Properties": ensure => absent}
+  perl::cpan {"Data::Properties": ensure => installed}
 
 
   require postgresql::server
