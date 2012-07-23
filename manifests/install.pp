@@ -214,12 +214,19 @@ echo ''"
     require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
 
+  file{'goldg.conf':
+    ensure  => file,
+    path    => '/opt/gold/etc/goldg.conf',
+    content => template('gold/goldg.conf.erb'),
+    require => Exec['install_src','install-gui'],
+  }
+
   file{'gold_vhost':
     ensure  => file,
     path    => '/etc/apache2/sites-available/gold_vhost',
     content => template('gold/gold_vhost.erb'),
     notify  => Service[$httpd],
-    require => Exec['gold_ssl.crt'],
+    require => [Exec['gold_ssl.crt'],File['goldg.conf']],
   }
 
   # I really need to do a proper Apache manifest!
