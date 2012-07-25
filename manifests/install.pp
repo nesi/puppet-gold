@@ -65,12 +65,22 @@ class gold::install(
   perl::cpan {'Module::Build': ensure => installed}
   perl::cpan {'Params::Validate': ensure => installed}
   # perl::cpan {'SOAP': ensure => installed}
-  perl::cpan {'Term::ReadLine::Gnu': ensure => installed}
+  # perl::cpan {'Term::ReadLine::Gnu': ensure => installed}
   perl::cpan {'Time::HiRes': ensure => installed}
   perl::cpan {'XML::SAX': ensure => installed}
   perl::cpan {'XML::LibXML::Common': ensure => installed}
   perl::cpan {'XML::LibXML': ensure => installed}
   perl::cpan {'XML::NamespaceSupport': ensure => installed}
+
+  # Term::ReadLine::Gnu is special, the module isn't to be included directly.Naughty.
+  exec{"install_readline_gnu":
+    path    => ['/usr/bin/','/bin'],
+    command => "cpan -i Term::ReadLine::Gnu",
+    # unless  => "perl -MTerm::ReadLine::Gnu -e 'print \"Term::ReadLine::Gnu loaded\"'",
+    creates => '/usr/local/lib/perl/5.14.2/Term/ReadLine/Gnu.pm',
+    timeout => 600,
+    require => [Package[$perl::package],Exec['configure_cpan']],
+  }
 
   require postgresql::server
   require postgresql::client
@@ -158,7 +168,7 @@ class gold::install(
     cwd     => "/home/gold/src/gold-${version}",
     user    => 'gold',
     command => '/usr/bin/make deps',
-    creates => "/home/gold/src/gold-${version}/src/DBI-1.53",
+    creates => "/home/gold/src/gold-${version}/src/CGI.pm-3.10.tar.gz",
     require => Exec['compile_src'],
   }
 
