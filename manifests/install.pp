@@ -183,7 +183,7 @@ class gold::install(
     user => 'gold',
     path => ['/bin'],
     command => "echo 'export PATH=\$PATH:/opt/gold/bin' >> /home/gold/.bashrc",
-    unless  => 'echo $PATH|grep /opt/gold/bin',
+    unless  => 'grep "/opt/gold/bin" /home/gold/.bashrc',
   }
 
   if $web_ui {
