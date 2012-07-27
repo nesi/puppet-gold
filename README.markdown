@@ -31,9 +31,45 @@ This module requires the NeSI Puppet modules for Perl and PostgreSQL.
 
 It also requires Apache with mod_ssl.
 
-# Using 
+# Prerequsities
+
+Using the NeSI PostgreSQL module, define a PostgreSQL database on the GOLD server with localhost, IP address, and fully qualified domain name as listen addresses
+
+		class{'postgresql::server':
+				listen_addresses	=> "localhost,${ipaddress},${fqdn}",
+		}
+
+# Using the gold class 
+
+A recommended GOLD install
+
+		class{'gold':
+					web_ui				=> true,
+					httpd					=> 'httpd',
+					country				=> 'NZ',
+					state					=> 'North Island',
+					city					=> 'Auckland',
+					organisation	=> 'New Zealand eScience Infrastructure',
+					ou 						=> 'NeSI@Auckland',
+					admin_email		=> 'support@nesi.org.nz',
+		}
 
 ## Parameters
+
+* **version**: Sets the version of GOLD to be installed, defaults to '2.2.0.4'
+* **web_ui**: If 'true' the GOLD Web UI will be installed, defaults to 'false'
+* **httpd**: The name of the HTTP daemon running, defaults to 'apache2'. This must be the service name as defined in Puppet.
+* **pass_phrase**: Setts the password of the gold database user, defaults to 'changeme'. Using the default value is *not* recommended.
+* **psql_server**: Specifies the host name of the PostgreSQL server for the gold database, defaultst to 'false' indicating the server is the localhost.
+* **db_user**: The PostgreSQL database user name, defaults to 'gold'
+* **db_name**: The PostgreSQL database name, defaults to 'gold'
+* **country**: The two letter country code for the GOLD self signed certificate, defaults to "". Using the default value is *not* recommended.
+* **state**: The state for the GOLD self signed certificate, defaults to "". Using the default value is *not* recommended.
+* **city**:  The city value for the GOLD self signed certificate, defaults to "". Using the default value is *not* recommended.
+* **organisation**:  The organisation name for the GOLD self signed certificate, defaults to "". Using the default value is *not* recommended.
+* **ou**: The organisational unit for the GOLD self signed certificate, defaults to "". 
+* **admin_email**: An email address for the GOLD administrator, this value is required and there is no default.
+* **extra_groups**: A list of extra user groups to add to the gold user, defaults to 'false' indicating no additional groups are required.
 
 # To do...
 
