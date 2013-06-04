@@ -22,55 +22,18 @@ class gold::install(
 ){
 
   include perl
-  package {"libxml2": ensure => installed }
-  package {"libxml2-dev": ensure => installed}
-  package {"libxml-libxml-perl": ensure => installed}
-  package {"libpg-perl": ensure => installed}
-  package {"liblog-dispatch-filerotate-perl": ensure => installed}
-  package {"openssl": ensure => installed }
-  package {"build-essential": ensure => installed }
-  package {"readline-common": ensure => installed }
-  package {"libncurses5-dev": ensure => installed }
-  package {"libreadline-dev": ensure => installed }
-  package {"git-core": ensure => installed}
-  package {"libapache2-request-perl": ensure => installed}
-  package {"libcgi-application-plugin-session-perl": ensure => installed}
-  package {"libwww-mechanize-gzip-perl": ensure => installed}
-  package {"libcrypt-cbc-perl": ensure => installed}
-  package {"libcrypt-des-perl": ensure => installed}
-  package {"libcrypt-des-ede3-perl": ensure => installed}
-  package {"libdigest-bubblebabble-perl": ensure => installed}
-  package {"libdbd-pg-perl": ensure => installed}
 
-  perl::cpan {'CGI': ensure => installed}
-  perl::cpan {'CGI::Session': ensure => installed}
-  perl::cpan {'Compress::Zlib': ensure => installed}
-  perl::cpan {'Crypt::CBC': ensure => installed}
-  perl::cpan {'Crypt::DES': ensure => installed}
-  perl::cpan {'Crypt::DES_EDE3': ensure => installed}
-  perl::cpan {'Data::Properties': ensure => installed}
-  perl::cpan {'Date::Manip': ensure => installed}
-  perl::cpan {'DBI': ensure => installed}
-  # perl::cpan {'DBD::Pg': ensure => installed} # Interactive, asks for PostgreSQL version.
-  perl::cpan {'Digest': ensure => installed}
-  perl::cpan {'Digest::HMAC': ensure => installed}
-  perl::cpan {'Digest::MD5': ensure => installed}
-  perl::cpan {'Digest::SHA1': ensure => installed}
-  perl::cpan {'Error': ensure => installed}
-  perl::cpan {'Log::Dispatch': ensure => installed}
-  perl::cpan {'Log::Dispatch::FileRotate': ensure => installed}
-  perl::cpan {'Log::Log4perl': ensure => installed}
-  perl::cpan {'MIME::Base64': ensure => installed}
-  perl::cpan {'Module::Build': ensure => installed}
-  perl::cpan {'Params::Validate': ensure => installed}
+  $dep_packages = ["libxml2","libxml2-dev","libxml-libxml-perl","libpg-perl","liblog-dispatch-filerotate-perl","openssl","build-essential","readline-common","libncurses5-dev","libreadline-dev","git-core","libapache2-request-perl","libcgi-application-plugin-session-perl","libwww-mechanize-gzip-perl","libcrypt-cbc-perl","libcrypt-des-perl","libcrypt-des-ede3-perl","libdigest-bubblebabble-perl","libdbd-pg-perl"]
+
+  package{$dep_packages: ensure => installed}
+
+  $dep_cpan = ['CGI','CGI::Session','Compress::Zlib','Crypt::CBC','Crypt::DES','Crypt::DES_EDE3','Data::Properties','Date::Manip','DBI','Digest','Digest::HMAC','Digest::MD5','Digest::SHA1','Error','Log::Dispatch','Log::Dispatch::FileRotate','Log::Log4perl','MIME::Base64','Module::Build','Params::Validate','Time::HiRes','XML::SAX','XML::LibXML::Common','XML::LibXML','XML::NamespaceSupport']
+
+  perl::cpan{$dep_cpan: ensure => installed}
+
   # perl::cpan {'SOAP': ensure => installed}
   # perl::cpan {'Term::ReadLine::Gnu': ensure => installed}
-  perl::cpan {'Time::HiRes': ensure => installed}
-  perl::cpan {'XML::SAX': ensure => installed}
-  perl::cpan {'XML::LibXML::Common': ensure => installed}
-  perl::cpan {'XML::LibXML': ensure => installed}
-  perl::cpan {'XML::NamespaceSupport': ensure => installed}
-
+  # perl::cpan {'DBD::Pg': ensure => installed} # Interactive, asks for PostgreSQL version.
   # Term::ReadLine::Gnu is special, the module isn't to be included directly.Naughty.
   exec{"install_readline_gnu":
     path    => ['/usr/bin/','/bin'],
@@ -125,18 +88,8 @@ class gold::install(
     creates => "/home/gold/src/gold-${version}/config.status",
     require => [
       Exec['get_gold_src'],
-      Package[
-        'perl',
-        'libxml2',
-        'libxml2',
-        'libxml-libxml-perl',
-        'libpg-perl',
-        'liblog-dispatch-filerotate-perl',
-        'openssl','build-essential',
-        'readline-common',
-        'libncurses5-dev',
-        'libreadline-dev',
-        'git-core']
+      Package[$dep_packages],
+      Perl::Cpan[$dep_cpan]
     ]
   }
 
