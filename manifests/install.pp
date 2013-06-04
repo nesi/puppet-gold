@@ -8,7 +8,6 @@
 class gold::install(
   $version,
   $web_ui,
-  $httpd,
   $pass_phrase,
   $psql_server,
   $db_user,
@@ -81,9 +80,6 @@ class gold::install(
     timeout => 600,
     require => [Package[$perl::package],Exec['configure_cpan']],
   }
-
-  require postgresql::server
-  require postgresql::client
 
   user{"gold":
     ensure      => "present",
