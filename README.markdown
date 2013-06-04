@@ -36,7 +36,7 @@ It also requires Apache with mod_ssl.
 Using the NeSI PostgreSQL module, define a PostgreSQL database on the GOLD server with localhost, IP address, and fully qualified domain name as listen addresses
 
 		class{'postgresql::server':
-				listen_addresses	=> "localhost,${ipaddress},${fqdn}",
+				listen_addresses	=> "localhost,${::ipaddress},${::fqdn}",
 		}
 
 # Using the gold class 
@@ -71,7 +71,12 @@ A recommended GOLD install
 * **admin_email**: An email address for the GOLD administrator, this value is required and there is no default.
 * **extra_groups**: A list of extra user groups to add to the gold user, defaults to 'false' indicating no additional groups are required.
 
-# To do...
+# To do
+
+Update to be compatible with:
+
+* [NeSI fork](https://github.com/nesi/puppetlabs-apache) of the [PuppetLabs Apache Module](https://github.com/puppetlabs/puppetlabs-apache)
+* [Example42 Tomcat Module](https://github.com/example42/puppet-tomcat)
 
 # Credits
 
