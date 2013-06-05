@@ -23,9 +23,16 @@ class gold::install(
 
   include perl
 
-  $dep_packages = ['libxml2','libxml2-dev','libxml-libxml-perl','libpg-perl','liblog-dispatch-filerotate-perl','openssl','build-essential','readline-common','libncurses5-dev','libreadline-dev','git-core','libapache2-request-perl','libcgi-application-plugin-session-perl','libwww-mechanize-gzip-perl','libcrypt-cbc-perl','libcrypt-des-perl','libcrypt-des-ede3-perl','libdigest-bubblebabble-perl','libdbd-pg-perl']
+  $dep_packages = ['libxml2','libxml2-dev','libxml-libxml-perl','libpg-perl','liblog-dispatch-filerotate-perl','openssl','readline-common','libncurses5-dev','libreadline-dev','git-core','libapache2-request-perl','libcgi-application-plugin-session-perl','libwww-mechanize-gzip-perl','libcrypt-cbc-perl','libcrypt-des-perl','libcrypt-des-ede3-perl','libdigest-bubblebabble-perl','libdbd-pg-perl']
 
   package{$dep_packages: ensure => installed}
+
+  # build-essential package is very common, so check for previous definition
+  if ! defined(Package['build-essential']) {
+    package{'build-essential':
+      ensure => installed,
+    }
+  }
 
   # Possibly it would be more reliable to install all the
   # perl dependencies as packages...
