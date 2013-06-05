@@ -207,10 +207,10 @@ echo ''"
     docroot       => '/var/www/cgi-bin/gold',
     rewrite_cond  => '%{HTTPS} off',
     rewrite_rule  => '(.*) https://%{HTTPS_HOST}%{REQUEST_URI}',
-    require       => Apache::Vhost['gold-ssl'],
+    require       => Apache::Vhost['gold_ssl'],
   }
 
-  apache::vhost{'gold-ssl':
+  apache::vhost{'gold_ssl':
     servername    => $::fqdn,
     serveradmin   => 'support@nesi.org.nz',
     port          => 443,
