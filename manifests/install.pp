@@ -207,7 +207,6 @@ echo ''"
     docroot       => '/var/www/cgi-bin/gold',
     rewrite_cond  => '%{HTTPS} off',
     rewrite_rule  => '(.*) https://%{HTTPS_HOST}%{REQUEST_URI}',
-    require       => Apache::Vhost['gold_ssl'],
   }
 
   apache::vhost{'gold_ssl':
