@@ -219,7 +219,6 @@ echo ''"
     ssl_certs_dir => '/etc/apache2/',
     ssl_cert      => '/etc/apache2/ssl.crt/gold-server.crt',
     ssl_key       => '/etc/apache2/ssl.key/gold-server.key',
-    require       => Service['gold'],
     setenvif      => ['User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown'],
     aliases       => [ {
       alias => '/cgi-bin/',
@@ -278,7 +277,7 @@ echo ''"
     mode    => '0755',
     path    => '/etc/init.d/gold',
     content => template('gold/new.gold.init.erb'),
-    require => Exec['bootstrap_gold_db','enable_gold_site','create_auth_keys'],
+    require => [Apache::Vhost['gold_ssl'],Exec['bootstrap_gold_db','create_auth_keys']],
   }
 
   service{'gold':
