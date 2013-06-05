@@ -12,15 +12,15 @@ class gold(
   $psql_server  = false,
   $db_user      = 'gold',
   $db_name      = 'gold',
-  $country      = "",
-  $state        = "",
-  $city         = "",
-  $organisation = "",
-  $ou           = "",
-  $admin_email,
+  $country      = '',
+  $state        = '',
+  $city         = '',
+  $organisation = '',
+  $ou           = '',
+  $admin_email  = 'root@localhost',
   $extra_groups = false
 ){
-  case $operatingsystem {
+  case $::operatingsystem {
 
     Ubuntu: {
       class{'gold::install':
@@ -40,7 +40,7 @@ class gold(
       }
     }
     default: {
-      warning{"GOLD is not configured for $operatingsystem":}
+      warning("GOLD is not configured for ${::operatingsystem}")
     }
   }
 

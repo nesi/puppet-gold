@@ -23,7 +23,7 @@ class gold::install(
 
   include perl
 
-  $dep_packages = ["libxml2","libxml2-dev","libxml-libxml-perl","libpg-perl","liblog-dispatch-filerotate-perl","openssl","build-essential","readline-common","libncurses5-dev","libreadline-dev","git-core","libapache2-request-perl","libcgi-application-plugin-session-perl","libwww-mechanize-gzip-perl","libcrypt-cbc-perl","libcrypt-des-perl","libcrypt-des-ede3-perl","libdigest-bubblebabble-perl","libdbd-pg-perl"]
+  $dep_packages = ['libxml2','libxml2-dev','libxml-libxml-perl','libpg-perl','liblog-dispatch-filerotate-perl','openssl','build-essential','readline-common','libncurses5-dev','libreadline-dev','git-core','libapache2-request-perl','libcgi-application-plugin-session-perl','libwww-mechanize-gzip-perl','libcrypt-cbc-perl','libcrypt-des-perl','libcrypt-des-ede3-perl','libdigest-bubblebabble-perl','libdbd-pg-perl']
 
   package{$dep_packages: ensure => installed}
 
@@ -37,24 +37,24 @@ class gold::install(
   # perl::cpan {'Term::ReadLine::Gnu': ensure => installed}
   # perl::cpan {'DBD::Pg': ensure => installed} # Interactive, asks for PostgreSQL version.
   # Term::ReadLine::Gnu is special, the module isn't to be included directly.Naughty.
-  exec{"install_readline_gnu":
+  exec{'install_readline_gnu':
     path    => ['/usr/bin/','/bin'],
-    command => "cpan -i Term::ReadLine::Gnu",
+    command => 'cpan -i Term::ReadLine::Gnu',
     # unless  => "perl -MTerm::ReadLine::Gnu -e 'print \"Term::ReadLine::Gnu loaded\"'",
     creates => '/usr/local/lib/perl/5.14.2/Term/ReadLine/Gnu.pm',
     timeout => 600,
     require => [Package[$perl::package],Exec['configure_cpan']],
   }
 
-  user{"gold":
-    ensure      => "present",
-    comment     => "Gold User",
+  user{'gold':
+    ensure      => 'present',
+    comment     => 'Gold User',
     home        => '/home/gold',
     managehome  => true,
   }
 
   User['gold']{
-    shell       => "/bin/bash",
+    shell       => '/bin/bash',
     groups      => $extra_groups ? {
       false       => [],
       default     => $extra_groups,
@@ -63,7 +63,7 @@ class gold::install(
   }
 
   file{'/home/gold':
-    ensure => directory,
+    ensure  => directory,
     owner   => 'gold',
     group   => 'gold',
     recurse => true,
@@ -124,13 +124,13 @@ class gold::install(
   exec{'install_src':
     cwd     => "/home/gold/src/gold-${version}",
     command => '/usr/bin/make install',
-    creates => "/opt/gold/bin/goldsh",
+    creates => '/opt/gold/bin/goldsh',
     require => Exec['compile_src','compile_deps_src'],
   }
 
   exec{'gold_path':
-    user => 'gold',
-    path => ['/bin'],
+    user    => 'gold',
+    path    => ['/bin'],
     command => "echo 'export PATH=\$PATH:/opt/gold/bin' >> /home/gold/.bashrc",
     unless  => 'grep "/opt/gold/bin" /home/gold/.bashrc',
   }
@@ -141,7 +141,7 @@ class gold::install(
       command => '/usr/bin/make install-gui',
       creates => "/var/www/cgi-bin/gold/gold.cgi",
       require => Exec['compile_web_ui_src','compile_deps_src'],
-      notify  => Service[$httpd],
+      notify  => Service['apache'],
     }
   }
 
@@ -149,7 +149,7 @@ class gold::install(
     path    => ['/bin','/usr/bin'],
     cwd     => "/home/gold/src/gold-${version}",
     command => "echo ${pass_phrase} | /usr/bin/make auth_key",
-    creates => "/opt/gold/etc/auth_key",
+    creates => '/opt/gold/etc/auth_key',
     require => Exec['install_src'],
   }
 
@@ -178,7 +178,7 @@ ${state}
 ${city}
 ${organisation}
 ${ou}
-${fqdn}
+${::fqdn}
 ${admin_email}
 EOF
 echo ''"
@@ -190,8 +190,7 @@ echo ''"
     require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
 
-  # These should really be defined _before_ calling the 
-  # GOLD class
+  # These should really be defined _before_ calling the GOLD class
   if !defined(Class['apache']) {
     include apache
   }
@@ -219,18 +218,23 @@ echo ''"
     ssl           => true,
     ssl_certs_dir => '/etc/apache2/',
     ssl_cert      => '/etc/apache2/ssl.crt/gold-server.crt',
-    ssl_key       => '/etc/apache2/ssl.key/gold-server.key'
+    ssl_key       => '/etc/apache2/ssl.key/gold-server.key',
+    require       => Service['gold'],
     setenvif      => ['User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown'],
-    aliases => [ { alias => '/cgi-bin/', path => '/var/www/cgi-bin/' } ],
+    aliases       => [ {
+      alias => '/cgi-bin/',
+      path  => '/var/www/cgi-bin/'
+    } ],
     directories   => [
       { path        => '/var/www/cgi-bin',
         options     => ['ExecCGI'],
-        addhandlers => [
-          { handler => 'cgi-script', extensions => ['.cgi']}
-        ],
+        addhandlers => [ {
+          handler     => 'cgi-script',
+          extensions  => ['.cgi']
+        } ],
       }
     ],
-    require => Service['gold'],
+
   }
 
   file{'goldg.conf':
@@ -255,7 +259,7 @@ echo ''"
     ensure      => present,
     user        => 'gold',
     databases   => ['gold'],
-    host        => "${ipaddress}/16",
+    host        => "${::ipaddress}/16",
     type        => 'host',
     auth_method => 'trust',
   }
@@ -272,13 +276,13 @@ echo ''"
   file{'gold_init.d':
     ensure  => file,
     mode    => '0755',
-    path    => "/etc/init.d/gold",
+    path    => '/etc/init.d/gold',
     content => template('gold/new.gold.init.erb'),
     require => Exec['bootstrap_gold_db','enable_gold_site','create_auth_keys'],
   }
 
   service{'gold':
-    ensure  => running,
+    ensure      => running,
     enable      => true,
     hasstatus   => true,
     hasrestart  => true,
