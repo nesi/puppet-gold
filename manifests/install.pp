@@ -43,7 +43,7 @@ class gold::install(
     # unless  => "perl -MTerm::ReadLine::Gnu -e 'print \"Term::ReadLine::Gnu loaded\"'",
     creates => '/usr/local/lib/perl/5.14.2/Term/ReadLine/Gnu.pm',
     timeout => 600,
-    require => [Package[$perl::package],Exec['configure_cpan']],
+    require => [Perl::Cpan[$dep_cpan]],
   }
 
   user{'gold':
