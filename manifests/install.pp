@@ -141,7 +141,7 @@ class gold::install(
       command => '/usr/bin/make install-gui',
       creates => "/var/www/cgi-bin/gold/gold.cgi",
       require => Exec['compile_web_ui_src','compile_deps_src'],
-      notify  => Service['apache'],
+      notify  => Service['httpd'],
     }
   }
 
