@@ -27,6 +27,8 @@ class gold::install(
 
   package{$dep_packages: ensure => installed}
 
+  # Possibly it would be more reliable to install all the
+  # perl dependencies as packages...
   $dep_cpan = ['CGI','CGI::Session','Compress::Zlib','Crypt::CBC','Crypt::DES','Crypt::DES_EDE3','Data::Properties','Date::Manip','DBI','Digest','Digest::HMAC','Digest::MD5','Digest::SHA1','Error','Log::Dispatch','Log::Dispatch::FileRotate','Log::Log4perl','MIME::Base64','Module::Build','Params::Validate','Time::HiRes','XML::SAX','XML::LibXML::Common','XML::LibXML','XML::NamespaceSupport']
 
   perl::cpan{$dep_cpan: ensure => installed}
@@ -111,8 +113,6 @@ class gold::install(
     }
   }
 
-  # Possibly it would be more reliable to install all the
-  # perl dependencies as packages...
   exec{'compile_deps_src':
     cwd     => "/home/gold/src/gold-${version}",
     user    => 'gold',
@@ -190,26 +190,47 @@ echo ''"
     require => [Exec['gold_ssl.key'],File['gold_ssl.crt']],
   }
 
-  file{'gold_vhost':
-    ensure  => file,
-    path    => '/etc/apache2/sites-available/gold_vhost',
-    content => template('gold/gold_vhost.erb'),
-    notify  => Service[$httpd],
-    require => [Exec['gold_ssl.crt'],File['goldg.conf']],
+  # These should really be defined _before_ calling the 
+  # GOLD class
+  if !defined(Class['apache']) {
+    include apache
   }
 
-  # I really need to do a proper Apache manifest!
-  exec{'enable_mod_ssl':
-    command => '/usr/sbin/a2enmod ssl',
-    creates => '/etc/apache2/mods-enabled/ssl.load',
-    notify  => Service[$httpd],
+  if ! defined(Class['apache::mod::ssl']) {
+    include apache::mod::ssl
   }
 
-  exec{'enable_gold_site':
-    command => '/usr/sbin/a2ensite gold_vhost',
-    creates => '/etc/apache2/sites-enabled/gold_vhost',
-    notify  => Service[$httpd],
-    require => [File['gold_vhost'],Exec['enable_mod_ssl']],
+  # Redirect HTTP to HTTPS
+  apache::vhost{'gold':
+    servername    => $::fqdn,
+    serveradmin   => 'support@nesi.org.nz',
+    port          => 80,
+    docroot       => '/var/www/cgi-bin/gold',
+    rewrite_cond  => '%{HTTPS} off',
+    rewrite_rule  => '(.*) https://%{HTTPS_HOST}%{REQUEST_URI}',
+    require       => Apache::Vhost['gold-ssl'],
+  }
+
+  apache::vhost{'gold-ssl':
+    servername    => $::fqdn,
+    serveradmin   => 'support@nesi.org.nz',
+    port          => 443,
+    docroot       => '/var/www/cgi-bin/gold',
+    ssl           => true,
+    ssl_certs_dir => '/etc/apache2/',
+    ssl_cert      => '/etc/apache2/ssl.crt/gold-server.crt',
+    ssl_key       => '/etc/apache2/ssl.key/gold-server.key'
+    setenvif      => ['User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown'],
+    aliases => [ { alias => '/cgi-bin/', path => '/var/www/cgi-bin/' } ],
+    directories   => [
+      { path        => '/var/www/cgi-bin',
+        options     => ['ExecCGI'],
+        addhandlers => [
+          { handler => 'cgi-script', extensions => ['.cgi']}
+        ],
+      }
+    ],
+    require => Service['gold'],
   }
 
   file{'goldg.conf':
