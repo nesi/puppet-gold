@@ -34,6 +34,13 @@ class gold::install(
     }
   }
 
+  # mutt is a common package, check for previous definitions
+  if ! defined(Package['mutt']) {
+    package{'mutt':
+      ensure => installed,
+    }
+  }
+
   # Possibly it would be more reliable to install all the
   # perl dependencies as packages...
   $dep_cpan = ['CGI','CGI::Session','Compress::Zlib','Crypt::CBC','Crypt::DES','Crypt::DES_EDE3','Data::Properties','Date::Manip','DBI','Digest','Digest::HMAC','Digest::MD5','Digest::SHA1','Error','Log::Dispatch','Log::Dispatch::FileRotate','Log::Log4perl','MIME::Base64','Module::Build','Params::Validate','Time::HiRes','XML::SAX','XML::LibXML::Common','XML::LibXML','XML::NamespaceSupport']
