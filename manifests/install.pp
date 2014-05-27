@@ -279,7 +279,11 @@ echo ''"
     cwd     => "/home/gold/src/gold-${version}",
     command => "psql gold < /home/gold/src/gold-${version}/bank.sql",
     unless  => 'psql gold -c \'\\dt\'|grep g_account',
-    require => [Postgresql::Server::Role['gold'],Postgresql::Server::User['gold']],
+    require => [
+      Postgresql::Server::Role['gold'],
+      Postgresql::Server::Database['gold'],
+      Postgresql::Server::Pg_hba_rule['gold_local']
+    ],
   }
 
   file{'gold_init.d':
