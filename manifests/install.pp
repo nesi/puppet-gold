@@ -256,22 +256,19 @@ echo ''"
     require => Exec['install_src'],
   }
 
-  postgresql::user{'gold':
-    ensure    => present,
-    encrypt   => true,
-    password  => 'appaling',
+  postgresql::server::role{'gold':
+    password_hash  => postgresql_password('gold','appaling'),
   }
 
-  postgresql::database{'gold':
-    ensure  => present,
+  postgresql::server::database{'gold':
     owner   => 'gold',
   }
 
-  postgresql::pg_hba{'gold_local':
-    ensure      => present,
+  postgresql::server::pg_hba_rule{'gold_local':
+    description => 'Allow local gold user access',
     user        => 'gold',
-    databases   => ['gold'],
-    host        => "${::ipaddress}/16",
+    database    => 'gold',
+    address     => "${::ipaddress}/16",
     type        => 'host',
     auth_method => 'trust',
   }
@@ -281,8 +278,8 @@ echo ''"
     path    => ['/usr/bin','/bin'],
     cwd     => "/home/gold/src/gold-${version}",
     command => "psql gold < /home/gold/src/gold-${version}/bank.sql",
-    unless  => "psql gold -c '\\dt'|grep g_account",
-    require => [Postgresql::Database[$db_name],Postgresql::User[$db_user]],
+    unless  => 'psql gold -c \'\\dt\'|grep g_account',
+    require => [Postgresql::Server::Role['gold'],Postgresql::Server::User['gold']],
   }
 
   file{'gold_init.d':

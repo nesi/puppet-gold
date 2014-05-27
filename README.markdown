@@ -24,10 +24,10 @@ It might seem bit excessive, but it will make sure the submodule isn't headless.
 
 # Requirements
 
-This module requires the NeSI Puppet modules for Perl and PostgreSQL.
+This module requires the NeSI Puppet modules for Perl and the Puppetlabs PostgreSQL Module.
 
 * https://github.com/nesi/puppet-perl
-* https://github.com/nesi/puppet-postgresql
+* https://github.com/puppetlabs/puppetlabs-postgresql
 
 It also requires Apache with mod_ssl.
 
