@@ -278,7 +278,7 @@ echo ''"
     path    => ['/usr/bin','/bin'],
     cwd     => "/home/gold/src/gold-${version}",
     command => "psql gold < /home/gold/src/gold-${version}/bank.sql",
-    unless  => 'psql gold -c \'\\dt\'|grep g_account',
+    unless  => "psql gold -c '\\dt'|grep g_account",
     require => [
       Postgresql::Server::Role['gold'],
       Postgresql::Server::Database['gold'],
